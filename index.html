@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio Player</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:,">
+  <style>
+    /* General Styles */
+    /* General Styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background: #0f172a;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 36px;
+      /* Bigger Title */
+    }
+
+    /* Player Container */
+    .player-container {
+      width: 95%;
+      max-width: 500px;
+      /* Increased Width */
+      padding: 40px;
+      /* Increased Padding */
+      background: linear-gradient(145deg, #1e293b, #374151);
+      border-radius: 20px;
+      /* Bigger Border Radius */
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+      text-align: center;
+    }
+
+    /* File Upload Button */
+    .file-btn {
+      padding: 15px 30px;
+      /* Bigger Button */
+      font-size: 18px;
+      /* Bigger Font */
+      border-radius: 30px;
+      /* Bigger Radius */
+      border: none;
+      background: linear-gradient(145deg, #00d4ff, #39ff14);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .file-btn:hover {
+      box-shadow: 0 0 20px #00d4ff;
+    }
+
+    .file-name {
+      font-size: 18px;
+      /* Bigger Font */
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #00d4ff;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      /* Increased Gap */
+      margin: 20px 0;
+    }
+
+    button.control-btn {
+      padding: 15px;
+      /* Bigger Buttons */
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #00d4ff, #39ff14);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button.control-btn:hover {
+      transform: scale(1.1);
+    }
+
+    button.control-btn svg {
+      width: 28px;
+      /* Bigger Icon */
+      height: 28px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      background: #374151;
+      height: 12px;
+      /* Increased Height */
+      border-radius: 12px;
+      /* Bigger Radius */
+      margin: 20px 0;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00d4ff, #39ff14);
+      border-radius: 12px;
+    }
+
+    /* Timer */
+    .time {
+      font-size: 18px;
+      /* Bigger Text */
+      color: #9ca3af;
+    }
+
+    /* Playback Speed */
+    select {
+      padding: 15px;
+      /* Bigger Padding */
+      font-size: 18px;
+      /* Bigger Font */
+      border-radius: 12px;
+      /* Bigger Radius */
+      border: none;
+      background: #374151;
+      color: white;
+      margin-bottom: 20px;
+      /* Extra Spacing */
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      /* Increased Gap */
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      /* Bigger Width */
+      height: 25px;
+      /* Bigger Height */
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #374151;
+      border-radius: 25px;
+      /* Bigger Radius */
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      /* Bigger Circle */
+      width: 18px;
+      left: 4px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    input:checked+.slider {
+      background: #00d4ff;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(24px);
+      /* Adjusted for Bigger Size */
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Audio Player</h1>
+  <div class="player-container">
+    <!-- File Upload -->
+    <input type="file" id="fileInput" accept="audio/*" hidden />
+    <label for="fileInput" id="uploadLabel" class="file-btn">Upload File</label>
+    <div id="fileName" class="file-name" style="display: none;"></div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button id="playPauseBtn" class="control-btn">
+        <svg id="playIcon" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" fill="white"></path>
+        </svg>
+        <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+          <path d="M6 5h4v14H6zm8 0h4v14h-4z" fill="white"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container" id="progressContainer">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div class="time">
+      <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+    </div>
+
+    <!-- Playback Speed -->
+    <label>Speed:</label>
+    <select id="speedControl">
+      <option value="0.25">0.25x</option>
+      <option value="0.5">0.5x</option>
+      <option value="0.75">0.75x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.25">1.25x</option>
+      <option value="1.5">1.5x</option>
+      <option value="1.75">1.75x</option>
+      <option value="2">2x</option>
+    </select>
+
+    <!-- Loop Toggle -->
+    <div class="toggle-container">
+      <label>Loop:</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="loopToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  <script>
+    // DOM Elements
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const uploadLabel = document.getElementById('uploadLabel');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const speedControl = document.getElementById('speedControl');
+    const loopToggle = document.getElementById('loopToggle');
+
+    // Audio Element
+    let audio = new Audio();
+    let isPlaying = false;
+
+    // Handle File Upload
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        // Display file name
+        fileName.textContent = file.name;
+        fileName.style.display = 'block';
+        uploadLabel.style.display = 'none'; // Hide upload button
+
+        // Load audio file
+        audio.src = URL.createObjectURL(file);
+
+        // Reset states
+        isPlaying = false;
+        togglePlayPauseIcon();
+        progressBar.style.width = '0%';
+        currentTimeEl.textContent = '0:00';
+        durationEl.textContent = '0:00';
+      }
+    });
+
+    // Play/Pause Toggle
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      isPlaying = !isPlaying;
+      togglePlayPauseIcon();
+    });
+
+    // Update Play/Pause Icon
+    function togglePlayPauseIcon() {
+      if (isPlaying) {
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    }
+
+    // Update Progress Bar and Time
+    audio.addEventListener('timeupdate', () => {
+      const progressPercent = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update Current Time and Duration
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+    // Seek in Progress Bar
+    progressContainer.addEventListener('click', (e) => {
+      const width = progressContainer.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+      audio.currentTime = (clickX / width) * duration;
+    });
+
+    // Format Time (mm:ss)
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Playback Speed Control
+    speedControl.addEventListener('change', () => {
+      audio.playbackRate = parseFloat(speedControl.value);
+    });
+
+    // Loop Toggle
+    loopToggle.addEventListener('change', () => {
+      audio.loop = loopToggle.checked; // Enable/Disable Loop
+    });
+
+    // Update total duration once audio is loaded
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+    // Reset progress bar when audio ends
+    audio.addEventListener('ended', () => {
+      isPlaying = false;
+      togglePlayPauseIcon(); // Reset to play icon
+      progressBar.style.width = '0%'; // Reset progress
+    });
+  </script>
+</body>
+
+</html>
