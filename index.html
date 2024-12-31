@@ -4,11 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Audio Player</title>
+  <title>Modern Music Player</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="icon" href="data:,">
   <style>
-    /* General Styles */
     /* General Styles */
     body {
       font-family: 'Poppins', sans-serif;
@@ -24,34 +23,35 @@
       justify-content: center;
     }
 
+    /* Title Outside Player Container */
     h1 {
       margin-bottom: 20px;
-      font-size: 36px;
-      /* Bigger Title */
+      /* Spacing between title and player */
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+      color: white;
     }
 
     /* Player Container */
     .player-container {
-      width: 95%;
-      max-width: 500px;
-      /* Increased Width */
-      padding: 40px;
-      /* Increased Padding */
+      width: 90%;
+      max-width: 450px;
+      padding: 30px;
       background: linear-gradient(145deg, #1e293b, #374151);
-      border-radius: 20px;
-      /* Bigger Border Radius */
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* File Upload Button */
     .file-btn {
-      padding: 15px 30px;
-      /* Bigger Button */
-      font-size: 18px;
-      /* Bigger Font */
-      border-radius: 30px;
-      /* Bigger Radius */
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 25px;
       border: none;
       background: linear-gradient(145deg, #00d4ff, #39ff14);
       color: white;
@@ -60,14 +60,13 @@
     }
 
     .file-btn:hover {
-      box-shadow: 0 0 20px #00d4ff;
+      box-shadow: 0 0 15px #00d4ff;
     }
 
     .file-name {
-      font-size: 18px;
-      /* Bigger Font */
+      font-size: 16px;
       font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: #00d4ff;
     }
 
@@ -76,21 +75,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      /* Increased Gap */
-      margin: 20px 0;
+      gap: 10px;
+      margin: 15px 0;
     }
 
     button.control-btn {
-      padding: 15px;
-      /* Bigger Buttons */
+      padding: 12px;
       border: none;
       border-radius: 50%;
       background: linear-gradient(145deg, #00d4ff, #39ff14);
       color: white;
       cursor: pointer;
       transition: 0.3s ease;
-      box-shadow: 0 6px 12px rgba(0, 255, 255, 0.7);
+      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -101,20 +98,17 @@
     }
 
     button.control-btn svg {
-      width: 28px;
-      /* Bigger Icon */
-      height: 28px;
+      width: 24px;
+      height: 24px;
     }
 
     /* Progress Bar */
     .progress-container {
       width: 100%;
       background: #374151;
-      height: 12px;
-      /* Increased Height */
-      border-radius: 12px;
-      /* Bigger Radius */
-      margin: 20px 0;
+      height: 10px;
+      border-radius: 10px;
+      margin: 15px 0;
       position: relative;
       cursor: pointer;
     }
@@ -123,47 +117,39 @@
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, #00d4ff, #39ff14);
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     /* Timer */
     .time {
-      font-size: 18px;
-      /* Bigger Text */
+      font-size: 14px;
       color: #9ca3af;
     }
 
     /* Playback Speed */
     select {
-      padding: 15px;
-      /* Bigger Padding */
-      font-size: 18px;
-      /* Bigger Font */
-      border-radius: 12px;
-      /* Bigger Radius */
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 10px;
       border: none;
       background: #374151;
       color: white;
-      margin-bottom: 20px;
-      /* Extra Spacing */
+      margin-bottom: 15px;
     }
 
     /* Toggle Switch */
     .toggle-container {
-      margin-top: 20px;
+      margin-top: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
-      /* Increased Gap */
+      gap: 10px;
     }
 
     .toggle-switch {
       position: relative;
-      width: 50px;
-      /* Bigger Width */
-      height: 25px;
-      /* Bigger Height */
+      width: 45px;
+      height: 22px;
     }
 
     .toggle-switch input {
@@ -180,18 +166,16 @@
       right: 0;
       bottom: 0;
       background: #374151;
-      border-radius: 25px;
-      /* Bigger Radius */
+      border-radius: 22px;
       transition: 0.3s;
     }
 
     .slider:before {
       content: "";
       position: absolute;
-      height: 18px;
-      /* Bigger Circle */
-      width: 18px;
-      left: 4px;
+      height: 16px;
+      width: 16px;
+      left: 3px;
       bottom: 3px;
       background: white;
       border-radius: 50%;
@@ -203,21 +187,60 @@
     }
 
     input:checked+.slider:before {
-      transform: translateX(24px);
-      /* Adjusted for Bigger Size */
+      transform: translateX(23px);
+    }
+
+    /* Mobile Adjustments */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .player-container {
+        padding: 15px;
+      }
+
+      .file-btn {
+        padding: 10px 18px;
+        font-size: 14px;
+      }
+
+      .controls button {
+        padding: 10px;
+      }
+
+      .progress-container {
+        height: 8px;
+      }
+
+      select {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .toggle-switch {
+        width: 40px;
+        height: 20px;
+      }
+
+      .slider:before {
+        height: 14px;
+        width: 14px;
+      }
+
+      input:checked+.slider:before {
+        transform: translateX(20px);
+      }
     }
   </style>
 </head>
 
 <body>
-  <h1>Audio Player</h1>
+  <h1>Modern Music Player</h1>
   <div class="player-container">
-    <!-- File Upload -->
     <input type="file" id="fileInput" accept="audio/*" hidden />
     <label for="fileInput" id="uploadLabel" class="file-btn">Upload File</label>
     <div id="fileName" class="file-name" style="display: none;"></div>
-
-    <!-- Controls -->
     <div class="controls">
       <button id="playPauseBtn" class="control-btn">
         <svg id="playIcon" viewBox="0 0 24 24">
@@ -228,16 +251,12 @@
         </svg>
       </button>
     </div>
-
-    <!-- Progress Bar -->
     <div class="progress-container" id="progressContainer">
       <div id="progressBar" class="progress-bar"></div>
     </div>
     <div class="time">
       <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
     </div>
-
-    <!-- Playback Speed -->
     <label>Speed:</label>
     <select id="speedControl">
       <option value="0.25">0.25x</option>
@@ -249,8 +268,6 @@
       <option value="1.75">1.75x</option>
       <option value="2">2x</option>
     </select>
-
-    <!-- Loop Toggle -->
     <div class="toggle-container">
       <label>Loop:</label>
       <label class="toggle-switch">
@@ -282,12 +299,12 @@
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
-        // Display file name
+        // Display the file name
         fileName.textContent = file.name;
         fileName.style.display = 'block';
         uploadLabel.style.display = 'none'; // Hide upload button
 
-        // Load audio file
+        // Load the selected audio file
         audio.src = URL.createObjectURL(file);
 
         // Reset states
@@ -321,17 +338,18 @@
       }
     }
 
-    // Update Progress Bar and Time
+    // Update Progress Bar and Timer
     audio.addEventListener('timeupdate', () => {
+      // Update progress bar
       const progressPercent = (audio.currentTime / audio.duration) * 100;
       progressBar.style.width = `${progressPercent}%`;
 
-      // Update Current Time and Duration
+      // Update current time
       currentTimeEl.textContent = formatTime(audio.currentTime);
       durationEl.textContent = formatTime(audio.duration);
     });
 
-    // Seek in Progress Bar
+    // Click-to-Seek in Progress Bar
     progressContainer.addEventListener('click', (e) => {
       const width = progressContainer.clientWidth;
       const clickX = e.offsetX;
@@ -353,21 +371,22 @@
 
     // Loop Toggle
     loopToggle.addEventListener('change', () => {
-      audio.loop = loopToggle.checked; // Enable/Disable Loop
+      audio.loop = loopToggle.checked; // Enable/Disable loop
     });
 
-    // Update total duration once audio is loaded
+    // Update Total Duration When Audio Loads
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = formatTime(audio.duration);
     });
 
-    // Reset progress bar when audio ends
+    // Reset Progress and Icon When Audio Ends
     audio.addEventListener('ended', () => {
       isPlaying = false;
       togglePlayPauseIcon(); // Reset to play icon
-      progressBar.style.width = '0%'; // Reset progress
+      progressBar.style.width = '0%'; // Reset progress bar
     });
   </script>
+
 </body>
 
 </html>
